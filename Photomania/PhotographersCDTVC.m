@@ -27,7 +27,7 @@
     UITableViewCell * cell = [self.tableView  dequeueReusableCellWithIdentifier:@"Photographer Cell"];
     Photographer * photographer  = [self.fetchedResultsController objectAtIndexPath:indexPath];
     cell.textLabel.text = photographer.name;
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d",[photographer.photos count]];
+    cell.detailTextLabel.text = [NSString stringWithFormat:@"%d",(int)[photographer.photos count]];
     return cell;
 }
 @end

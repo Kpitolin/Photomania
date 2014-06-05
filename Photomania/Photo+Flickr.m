@@ -52,7 +52,10 @@
 
 + (void) loadPhotosFromFlickrArray:(NSArray *)photos intoManagedObjectContext: (NSManagedObjectContext *)context ;// of Flickr Dictionnary
 {
-    
+    for (NSDictionary * photos in photos)
+    {
+        [self photoWithFlickrInfo:photos inManagedObjectContext:context]; // we just insert it in the database  and we don't take the return : perfectly fine and legal
+    }
 }
 
 

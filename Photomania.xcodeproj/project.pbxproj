@@ -30,7 +30,7 @@
 		0A672CF0193E316700259507 /* Photographer+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A672CEF193E316700259507 /* Photographer+Create.m */; };
 		0A906FAD193F05A300D68956 /* CoreDataTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A906FAC193F05A300D68956 /* CoreDataTableViewController.m */; };
 		0A906FB0193F061F00D68956 /* PhotographersCDTVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A906FAF193F061F00D68956 /* PhotographersCDTVC.m */; };
-		0A906FB3193F192D00D68956 /* PhotomaniaManagedDocument.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A906FB2193F192D00D68956 /* PhotomaniaManagedDocument.m */; };
+		0A9388D41940AE070068F407 /* FlickrHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 0A9388D31940AE070068F407 /* FlickrHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,8 +80,8 @@
 		0A906FAC193F05A300D68956 /* CoreDataTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreDataTableViewController.m; sourceTree = "<group>"; };
 		0A906FAE193F061F00D68956 /* PhotographersCDTVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotographersCDTVC.h; sourceTree = "<group>"; };
 		0A906FAF193F061F00D68956 /* PhotographersCDTVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotographersCDTVC.m; sourceTree = "<group>"; };
-		0A906FB1193F192D00D68956 /* PhotomaniaManagedDocument.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotomaniaManagedDocument.h; sourceTree = "<group>"; };
-		0A906FB2193F192D00D68956 /* PhotomaniaManagedDocument.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotomaniaManagedDocument.m; sourceTree = "<group>"; };
+		0A9388D21940AE070068F407 /* FlickrHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlickrHelper.h; sourceTree = "<group>"; };
+		0A9388D31940AE070068F407 /* FlickrHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlickrHelper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,27 +141,15 @@
 		0A672CA8193E252100259507 /* Photomania */ = {
 			isa = PBXGroup;
 			children = (
-				0A672CE0193E272200259507 /* Photo.h */,
-				0A672CE1193E272200259507 /* Photo.m */,
-				0A672CDA193E255C00259507 /* Photomania.xcdatamodeld */,
-				0A672CE3193E277B00259507 /* Photographer.h */,
-				0A672CE6193E281000259507 /* Photo+Flickr.h */,
-				0A672CE7193E281000259507 /* Photo+Flickr.m */,
-				0A672CEE193E316700259507 /* Photographer+Create.h */,
-				0A672CEF193E316700259507 /* Photographer+Create.m */,
-				0A906FAA193F05A300D68956 /* CoreDataTableViewController */,
-				0A672CE9193E2C1B00259507 /* Flickr Fetcher */,
-				0A672CE4193E277B00259507 /* Photographer.m */,
 				0A672CB1193E252100259507 /* PhotomaniaAppDelegate.h */,
 				0A672CB2193E252100259507 /* PhotomaniaAppDelegate.m */,
-				0A906FB1193F192D00D68956 /* PhotomaniaManagedDocument.h */,
-				0A906FB2193F192D00D68956 /* PhotomaniaManagedDocument.m */,
-				0A672CB4193E252100259507 /* Main_iPhone.storyboard */,
-				0A672CB7193E252100259507 /* Main_iPad.storyboard */,
-				0A906FAE193F061F00D68956 /* PhotographersCDTVC.h */,
-				0A906FAF193F061F00D68956 /* PhotographersCDTVC.m */,
-				0A672CBA193E252100259507 /* ViewController.h */,
-				0A672CBB193E252100259507 /* ViewController.m */,
+				0A9388D21940AE070068F407 /* FlickrHelper.h */,
+				0A9388D31940AE070068F407 /* FlickrHelper.m */,
+				0A9388D51940AE9A0068F407 /* Core Data Model */,
+				0A906FAA193F05A300D68956 /* CoreDataTableViewController */,
+				0A672CE9193E2C1B00259507 /* Flickr Fetcher */,
+				0A9388D71940AEC40068F407 /* View */,
+				0A9388D61940AEB70068F407 /* Controller */,
 				0A672CBD193E252100259507 /* Images.xcassets */,
 				0A672CA9193E252100259507 /* Supporting Files */,
 			);
@@ -214,6 +202,42 @@
 				0A906FAC193F05A300D68956 /* CoreDataTableViewController.m */,
 			);
 			path = CoreDataTableViewController;
+			sourceTree = "<group>";
+		};
+		0A9388D51940AE9A0068F407 /* Core Data Model */ = {
+			isa = PBXGroup;
+			children = (
+				0A672CE0193E272200259507 /* Photo.h */,
+				0A672CE1193E272200259507 /* Photo.m */,
+				0A672CDA193E255C00259507 /* Photomania.xcdatamodeld */,
+				0A672CE6193E281000259507 /* Photo+Flickr.h */,
+				0A672CE7193E281000259507 /* Photo+Flickr.m */,
+				0A672CEE193E316700259507 /* Photographer+Create.h */,
+				0A672CEF193E316700259507 /* Photographer+Create.m */,
+				0A672CE4193E277B00259507 /* Photographer.m */,
+				0A672CE3193E277B00259507 /* Photographer.h */,
+			);
+			name = "Core Data Model";
+			sourceTree = "<group>";
+		};
+		0A9388D61940AEB70068F407 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				0A906FAE193F061F00D68956 /* PhotographersCDTVC.h */,
+				0A906FAF193F061F00D68956 /* PhotographersCDTVC.m */,
+				0A672CBA193E252100259507 /* ViewController.h */,
+				0A672CBB193E252100259507 /* ViewController.m */,
+			);
+			name = Controller;
+			sourceTree = "<group>";
+		};
+		0A9388D71940AEC40068F407 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0A672CB4193E252100259507 /* Main_iPhone.storyboard */,
+				0A672CB7193E252100259507 /* Main_iPad.storyboard */,
+			);
+			name = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -318,9 +342,9 @@
 				0A906FB0193F061F00D68956 /* PhotographersCDTVC.m in Sources */,
 				0A672CE8193E281000259507 /* Photo+Flickr.m in Sources */,
 				0A672CBC193E252100259507 /* ViewController.m in Sources */,
+				0A9388D41940AE070068F407 /* FlickrHelper.m in Sources */,
 				0A672CF0193E316700259507 /* Photographer+Create.m in Sources */,
 				0A906FAD193F05A300D68956 /* CoreDataTableViewController.m in Sources */,
-				0A906FB3193F192D00D68956 /* PhotomaniaManagedDocument.m in Sources */,
 				0A672CB3193E252100259507 /* PhotomaniaAppDelegate.m in Sources */,
 				0A672CAF193E252100259507 /* main.m in Sources */,
 				0A672CE5193E277B00259507 /* Photographer.m in Sources */,

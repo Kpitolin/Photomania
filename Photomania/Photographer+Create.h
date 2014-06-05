@@ -7,6 +7,7 @@
 //
 
 #import "Photographer.h"
+#import "FlickrFetcher.h"
 
 @interface Photographer (Create)
 
