@@ -8,7 +8,7 @@
 
 #import "PhotographersCDTVC.h"
 #import "Photographer.h"
-
+#import "FlickrHelper.h"
 @implementation PhotographersCDTVC
 
 - (void) setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
@@ -30,4 +30,7 @@
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%d",(int)[photographer.photos count]];
     return cell;
 }
+
+
+
 @end

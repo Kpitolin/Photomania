@@ -72,8 +72,8 @@
         UIManagedDocument *managedDocument = nil;
         
         NSURL *url = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-        url = [url URLByAppendingPathComponent:@"DefaultAppDatabase"];
-        // url is "<Documents Directory>/<DefaultAppDatabase>"
+        url = [url URLByAppendingPathComponent:@"FlickrDatabase"];
+        // url is "<Documents Directory>/<FlickrDatabase>"
         
         // Create the shared instance lazily upon the first request.
         if (managedDocument == nil) {
