@@ -137,6 +137,10 @@
 {
     [self.tableView endUpdates];
 }
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    return YES;
+}
 
 @end
 

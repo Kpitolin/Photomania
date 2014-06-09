@@ -10,10 +10,15 @@
 #import "Photographer.h"
 #import "FlickrHelper.h"
 @implementation PhotographersCDTVC
+- (void)awakeFromNib
+{
+    self.managedObjectContext = [FlickrHelper managedDocument].managedObjectContext;
 
+}
 - (void) setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext
 {
-    _managedObjectContext = managedObjectContext ;
+    _managedObjectContext = self.managedObjectContext ; // here I really wanna get this managedObjectContext !!
+    
     NSFetchRequest * request =  [NSFetchRequest fetchRequestWithEntityName:@"Photographer"];
     request.predicate = nil; // Here I just want all of them
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"name" ascending:YES selector:@selector(localizedStandardCompare:)]];
