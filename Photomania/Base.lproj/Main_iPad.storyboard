@@ -69,6 +69,43 @@
             </objects>
             <point key="canvasLocation" x="2114" y="-807"/>
         </scene>
+        <!--View Controller-->
+        <scene sceneID="YkX-rf-r29">
+            <objects>
+                <viewController id="Vln-es-Aeg" customClass="URLViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="qqz-p3-b8e"/>
+                        <viewControllerLayoutGuide type="bottom" id="tJd-r0-sRv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="NFm-zH-m1K">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Zce-gw-q4L">
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="40"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                <dataDetectorType key="dataDetectorTypes" link="YES"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Zce-gw-q4L" firstAttribute="top" secondItem="NFm-zH-m1K" secondAttribute="top" id="8Rf-Wd-KiG"/>
+                            <constraint firstAttribute="trailing" secondItem="Zce-gw-q4L" secondAttribute="trailing" id="FRm-kn-qA2"/>
+                            <constraint firstAttribute="bottom" secondItem="Zce-gw-q4L" secondAttribute="bottom" id="cff-3O-a9V"/>
+                            <constraint firstItem="Zce-gw-q4L" firstAttribute="leading" secondItem="NFm-zH-m1K" secondAttribute="leading" id="oMR-F2-pw6"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="URLTextView" destination="Zce-gw-q4L" id="O1b-6h-oa8"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="swo-sd-Yjh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3045" y="582"/>
+        </scene>
         <!--Image View Controller-->
         <scene sceneID="wXU-Hh-L1t">
             <objects>
@@ -93,15 +130,25 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="0lg-bz-MGo" firstAttribute="leading" secondItem="7xW-V9-QJm" secondAttribute="leading" id="1Xp-HI-umd"/>
-                            <constraint firstAttribute="centerY" secondItem="EeI-J5-hVo" secondAttribute="centerY" id="YSd-qq-3Id"/>
-                            <constraint firstAttribute="trailing" secondItem="0lg-bz-MGo" secondAttribute="trailing" id="akY-QW-ISb"/>
-                            <constraint firstItem="0lg-bz-MGo" firstAttribute="top" secondItem="7xW-V9-QJm" secondAttribute="top" id="dXF-uK-3Xa"/>
-                            <constraint firstAttribute="bottom" secondItem="0lg-bz-MGo" secondAttribute="bottom" id="xY6-d0-SzH"/>
-                            <constraint firstAttribute="centerX" secondItem="EeI-J5-hVo" secondAttribute="centerX" id="ziE-WW-4es"/>
+                            <constraint firstItem="0lg-bz-MGo" firstAttribute="centerX" secondItem="EeI-J5-hVo" secondAttribute="centerX" id="Dpr-bJ-Ems"/>
+                            <constraint firstItem="0lg-bz-MGo" firstAttribute="leading" secondItem="7xW-V9-QJm" secondAttribute="leading" id="OBS-o2-Eaw"/>
+                            <constraint firstAttribute="bottom" secondItem="0lg-bz-MGo" secondAttribute="bottom" id="RrY-pR-SGm"/>
+                            <constraint firstItem="EeI-J5-hVo" firstAttribute="centerY" secondItem="0lg-bz-MGo" secondAttribute="centerY" id="SU3-fJ-f4A"/>
+                            <constraint firstAttribute="trailing" secondItem="0lg-bz-MGo" secondAttribute="trailing" id="m4y-ik-2dL"/>
+                            <constraint firstItem="0lg-bz-MGo" firstAttribute="top" secondItem="7xW-V9-QJm" secondAttribute="top" id="w6X-Pj-YWB"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="aXz-5t-WB1"/>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="aXz-5t-WB1">
+                        <barButtonItem key="rightBarButtonItem" title="URL" id="XEy-rx-15v">
+                            <connections>
+                                <segue destination="Vln-es-Aeg" kind="popover" identifier="Show URL" popoverAnchorBarButtonItem="XEy-rx-15v" id="cEa-3o-hcH">
+                                    <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                </segue>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="scrollView" destination="0lg-bz-MGo" id="AEN-qH-KMk"/>
                         <outlet property="spinner" destination="EeI-J5-hVo" id="1sE-Wg-jhw"/>
@@ -109,7 +156,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="vDb-fE-Ih0" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2818" y="1567"/>
+            <point key="canvasLocation" x="1792" y="1411"/>
         </scene>
         <!--Navigation Controller - Shutterbug-->
         <scene sceneID="26o-Wr-dic">
@@ -133,6 +180,7 @@
         <scene sceneID="3s0-BB-wsg">
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="opR-Xy-IUG" sceneMemberID="viewController">
+                    <extendedEdge key="edgesForExtendedLayout"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="S7x-N2-ZGv">
                         <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
@@ -145,7 +193,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jlH-xv-db8" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1860" y="1567"/>
+            <point key="canvasLocation" x="648" y="1579"/>
         </scene>
         <!--PhotographersCDTVC-->
         <scene sceneID="rGD-NU-WX8">

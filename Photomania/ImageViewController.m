@@ -7,12 +7,13 @@
 //
 
 #import "ImageViewController.h"
-
+#import "URLViewController.h"
 @interface ImageViewController () <UIScrollViewDelegate , UISplitViewControllerDelegate>
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UIImage *image;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *spinner;
+@property (weak, nonatomic) UIPopoverController * urlPopOverController;
 @end
 
 @implementation ImageViewController
@@ -98,7 +99,38 @@
 {
     [self.scrollView addSubview:self.imageView];
 }
+#pragma mark - Navigation
+-(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    
+    
+    if ([segue.destinationViewController isKindOfClass:[URLViewController class]] ){
+        URLViewController* urlvc = segue.destinationViewController;
+        
+        if ([segue isKindOfClass:[UIStoryboardPopoverSegue class]])
+        {
+            UIStoryboardPopoverSegue * popOverSegue = (UIStoryboardPopoverSegue*)segue;
+            self.urlPopOverController = popOverSegue.popoverController;
+        }
+        
+        
+        urlvc.url = self.imageURL;
+        
+    }
+    
+    
+    
+}
 
+-(BOOL) shouldPerformSegueWithIdentifier:(NSString *)identifier sender:(id)sender
+{
+    if ([identifier isEqualToString:@"Show URL"]){
+        return !self.urlPopOverController? (self.imageURL ? YES : NO) :NO ;
+
+    }else{
+        return [super shouldPerformSegueWithIdentifier:identifier sender:sender];
+    }
+     
+}
 
 #pragma mark - UISPlitViewControllerDelegate
 
@@ -127,5 +159,10 @@
 {
     self.navigationItem.leftBarButtonItem = nil;
 }
+
+
+
+
+
 
 @end
