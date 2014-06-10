@@ -15,7 +15,7 @@
 
 @property (nonatomic, retain) NSString * imageURL;
 @property (nonatomic, retain) NSString * subtitle;
-@property (nonatomic, retain) NSString * titlte;
+@property (nonatomic, retain) NSString * title;
 @property (nonatomic, retain) NSString * uniqueId;
 @property (nonatomic, retain) Photographer *whoTook;
 
