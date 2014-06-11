@@ -13,7 +13,7 @@
 @implementation PhotographersCDTVC
 - (void)awakeFromNib
 {
-    self.managedObjectContext = [FlickrHelper managedDocument].managedObjectContext;
+   // self.managedObjectContext = FlickrHelper.managedDocument;
 
 }
 - (void) setManagedObjectContext:(NSManagedObjectContext *)managedObjectContext

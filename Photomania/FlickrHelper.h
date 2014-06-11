@@ -9,6 +9,4 @@
 #import <Foundation/Foundation.h>
 
 @interface FlickrHelper : NSObject
-//+ (void)openDocument:(NSString *)nameOfDocument usingBlock:(void (^)())completionBlock;
-+(UIManagedDocument *)managedDocument;
 @end

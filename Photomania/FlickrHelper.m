@@ -37,23 +37,7 @@
     
     // If document exists on disk...
     
-    if ([[NSFileManager defaultManager] fileExistsAtPath:[url path]])
-    {
-        [doc openWithCompletionHandler:^(BOOL success)
-         {
-             
-             completionBlock(doc);
-         }];
-        
-    } else {
-        
-        [doc saveToURL:url
-      forSaveOperation:UIDocumentSaveForCreating
-     completionHandler:^(BOOL success)
-         {
-             completionBlock(doc);   
-         }];
-        
+ 
     }
     
 }
@@ -63,32 +47,10 @@
 
 
 
-
 #pragma mark  - Simple method
 
 
-+(UIManagedDocument *)managedDocument
-    {
-        UIManagedDocument *managedDocument = nil;
-        
-        NSURL *url = [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
-        url = [url URLByAppendingPathComponent:@"FlickrDatabase"];
-        // url is "<Documents Directory>/<FlickrDatabase>"
-        
-        // Create the shared instance lazily upon the first request.
-        if (managedDocument == nil) {
-            managedDocument = [[UIManagedDocument alloc] initWithFileURL:url];
-        }
-        
-        if (managedDocument.fileURL != url) {
-            UIManagedDocument *newDocument = [[UIManagedDocument alloc] initWithFileURL:url];
-            managedDocument = newDocument;
-        }
-        
-        NSLog(@"SharedDocument: %@", managedDocument);
-        
-        return managedDocument;
-    }
+
 
 
 
