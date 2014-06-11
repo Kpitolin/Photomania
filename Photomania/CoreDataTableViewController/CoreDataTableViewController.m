@@ -9,6 +9,13 @@
 
 @implementation CoreDataTableViewController
 
+
+-(BOOL)debug{
+    return YES;
+}
+-(void)setDebug:(BOOL)debug{
+    self.debug = debug;
+}
 #pragma mark - Fetching
 
 - (void)performFetch
@@ -137,10 +144,7 @@
 {
     [self.tableView endUpdates];
 }
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-    return YES;
-}
+
 
 @end
 
