@@ -10,7 +10,6 @@
 
 @interface PhotosCDTVC : CoreDataTableViewController
 
-//@"Photo Cell" is the table view cell's reuse id 
 
 
 @end

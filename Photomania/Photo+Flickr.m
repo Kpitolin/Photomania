@@ -18,16 +18,17 @@
 {
     
     Photo * photo = nil;
-    NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:@"Photo"];
     
     
     
     NSString * unique  = photoDictionnary [FLICKR_PHOTO_ID] ;
-    request.predicate = [NSPredicate predicateWithFormat:@"unique = %@",unique ];
+    NSFetchRequest * request = [NSFetchRequest fetchRequestWithEntityName:@"Photo"];
+
+    request.predicate = [NSPredicate predicateWithFormat:@"uniqueId = %@",unique ];
     NSError * error;
-    NSArray * matches = [ context executeFetchRequest:request error: &error];
+    NSArray * matches = [ context executeFetchRequest:request error: &error]; //error here
     
-    if (!matches  ||  error  || [matches count] > 1){
+    if (!matches  ||  error  || ([matches count] > 1)){
         
         // HANDLE THE ERRORS
         

@@ -17,11 +17,12 @@
 @property (copy, nonatomic) void (^flickrDownloadBackgroundURLSessionCompletionHandler)();
 @property (nonatomic, strong) NSURLSession * flickrDownloadSession;
 @property (nonatomic , strong) NSTimer * flickrForegroundFetchTimer;
-@property (strong, nonatomic) NSManagedObjectContext *photoDatabaseContext;
+@property ( strong, nonatomic) NSManagedObjectContext *photoDatabaseContext;
 @property ( strong, nonatomic) UIManagedDocument *managedDocument;
 
 
 @end
+
 
 // name of the Flickr fetching background download session
 #define FLICKR_FETCH @"Flickr Just Uploaded Fetch"
@@ -31,31 +32,35 @@
 
 // how long we'll wait for a Flickr fetch to return when we're in the background
 #define BACKGROUND_FLICKR_FETCH_TIMEOUT (10)
+
+
+#define NAME_OF_DATABASE @"FlickrDatabase"
+
 @implementation PhotomaniaAppDelegate
 
 
-/*
+
 #pragma mark - Core Data stack
 
 // Returns the managed object context for the application.
 // If the context doesn't already exist, it is created and bound to the persistent store coordinator for the application.
--(UIManagedDocument *)managedDocument
+-(void)createManagedDocument
 {
     UIManagedDocument * managedDocument = nil;
     
     
     
     // url is "<Documents Directory>/<FlickrDatabase>"
-    NSURL *url ;
+    NSFileManager* fileManager = [NSFileManager defaultManager];
+    NSURL * documentDirectory = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
+    NSString  *documentName = NAME_OF_DATABASE;
+    
+    NSURL * url = [documentDirectory URLByAppendingPathComponent:documentName];
     // Create the instance lazily upon the first request.
     if (self.managedDocument == nil) {
-        NSFileManager* fileManager = [NSFileManager defaultManager];
-        NSURL * documentDirectory = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] firstObject];
-        NSString  *documentName = NAME_OF_DATABASE;
         
-        NSURL *url = [documentDirectory URLByAppendingPathComponent:documentName];
         managedDocument = [[UIManagedDocument alloc] initWithFileURL:url];
-        managedDocument = managedDocument;
+        self.managedDocument = managedDocument;
     }
     
     
@@ -66,22 +71,22 @@
     
     if ([[NSFileManager defaultManager] fileExistsAtPath:[url path]])
     {
-        [_managedDocument openWithCompletionHandler:^(BOOL success)
-         {
-             
-             if (success) {
-                 // Do something here when the managedDocument is opened
-                 [self documentIsReady];
-             } else{
-                 NSLog(@" Couldn't open document at URL : %@",url);
-             }
-         }];
+        [self.managedDocument openWithCompletionHandler:^(BOOL success)
+        {
+            
+            if (success) {
+                // Do something here when the managedDocument is opened
+                [self documentIsReady];
+            } else{
+                NSLog(@" Couldn't open document at URL : %@",url);
+            }
+        }];
         
     } else {
         
-        [_managedDocument  saveToURL:url
-      forSaveOperation:UIDocumentSaveForCreating
-     completionHandler:^(BOOL success)
+        [self.managedDocument  saveToURL:url
+                    forSaveOperation:UIDocumentSaveForCreating
+                   completionHandler:^(BOOL success)
          {
              
              
@@ -90,7 +95,7 @@
                  [self documentIsReady];
              } else{
                  NSLog(@" Couldn't create document at URL :%@",url);
-
+                 
              }
              
              
@@ -98,8 +103,8 @@
         
         
     }
-    return _managedDocument;
-
+    
+    
 }
 
 
@@ -111,6 +116,8 @@
         self.photoDatabaseContext = self.managedDocument.managedObjectContext;
         NSLog(@"document successfully opened");
       
+        
+        
         
         
     }else if (self.managedDocument.documentState == UIDocumentStateClosed){
@@ -130,17 +137,6 @@
         
     }
 }
-
-- (NSManagedObjectContext *)managedObjectContext
-    {
-        if (_photoDatabaseContext != nil) {
-            return _photoDatabaseContext;
-        }
-        
-        return _photoDatabaseContext;
-    }
-
-*/
 // this is called occasionally by the system WHEN WE ARE NOT THE FOREGROUND APPLICATION
 // in fact, it will LAUNCH US if necessary to call this method
 // the system has lots of smarts about when to do this, but it is entirely opaque to us
@@ -216,37 +212,38 @@
                                                       userInfo:userInfo];
 }
 
-    
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-    {
-        // Override point for customization after application launch.
-        
-        
-        // Here I probably should get the ObjectManagedContext from the UIManagedDocument
-        [self startFlickrFetch]; // It's gonna start the Flickr fetch as soon as we launch
-        
-        return YES;
-    }
-    
-    
 
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    // Override point for customization after application launch.
+    [[UIApplication sharedApplication] setMinimumBackgroundFetchInterval:UIApplicationBackgroundFetchIntervalMinimum];
+    [self createManagedDocument];
     
+    // Here I probably should get the ObjectManagedContext from the UIManagedDocument
+    [self startFlickrFetch]; // It's gonna start the Flickr fetch as soon as we launch
+    
+    return YES;
+}
+
+
+
+
 - (void) startFlickrFetch
-    {
-        [self.flickrDownloadSession getTasksWithCompletionHandler:^ (NSArray * dataTasks, NSArray * uploadTasks, NSArray * downloadTasks){
-            
-            if (![downloadTasks count]){
-                NSURLSessionDownloadTask * task = [self.flickrDownloadSession downloadTaskWithURL:[FlickrFetcher URLforRecentGeoreferencedPhotos]];
-                task.taskDescription = FLICKR_FETCH;
-                [task resume]; // Really start the thing
-            } else{
-                for (NSURLSessionDownloadTask * task in downloadTasks) [task resume];
-                
-                
-            }
+{
+    [self.flickrDownloadSession getTasksWithCompletionHandler:^ (NSArray * dataTasks, NSArray * uploadTasks, NSArray * downloadTasks){
+        
+        if (![downloadTasks count]){
+            NSURLSessionDownloadTask * task = [self.flickrDownloadSession downloadTaskWithURL:[FlickrFetcher URLforRecentGeoreferencedPhotos]];
+            task.taskDescription = FLICKR_FETCH;
+            [task resume]; // Really start the thing
+        } else{
+            for (NSURLSessionDownloadTask * task in downloadTasks) [task resume];
             
             
-        }];
+        }
+        
+        
+    }];
 }
 
 - (void)startFlickrFetch:(NSTimer *)timer // NSTimer target/action always takes an NSTimer as an argument : it permits to call the startFlickrFetch when the NSTimer starts
@@ -254,122 +251,122 @@
     [self startFlickrFetch];
 }
 -(NSURLSession *) flickrDownloadSession { // It's the session we will use to fecth data in the background
-        
-        if(!_flickrDownloadSession){
-            static dispatch_once_t onceToken ; // Here I think we just create a thread to download the data throughout
-            dispatch_once(&onceToken, ^{
-                NSURLSessionConfiguration * urlSessionConfig = [NSURLSessionConfiguration backgroundSessionConfiguration:FLICKR_FETCH];
-                // urlSessionConfig.allowsCellularAccess = NO;
-                _flickrDownloadSession = [NSURLSession sessionWithConfiguration:urlSessionConfig delegate:self delegateQueue:nil]; // the delegate is gonna be called
-                // when the completionHandler finish his tasks
-            });
-        }
-        
-        
-        return _flickrDownloadSession;
-}
-    // gets the Flickr photo dictionaries out of the url and puts them into Core Data
-    // this was moved here after lecture to give you an example of how to declare a method that takes a block as an argument
-    // and because we now do this both as part of our background session delegate handler and when background fetch happens
     
+    if(!_flickrDownloadSession){
+        static dispatch_once_t onceToken ; // Here I think we just create a thread to download the data throughout
+        dispatch_once(&onceToken, ^{
+            NSURLSessionConfiguration * urlSessionConfig = [NSURLSessionConfiguration backgroundSessionConfiguration:FLICKR_FETCH];
+            // urlSessionConfig.allowsCellularAccess = NO;
+            _flickrDownloadSession = [NSURLSession sessionWithConfiguration:urlSessionConfig delegate:self delegateQueue:nil]; // the delegate is gonna be called
+            // when the completionHandler finish his tasks
+        });
+    }
+    
+    
+    return _flickrDownloadSession;
+}
+// gets the Flickr photo dictionaries out of the url and puts them into Core Data
+// this was moved here after lecture to give you an example of how to declare a method that takes a block as an argument
+// and because we now do this both as part of our background session delegate handler and when background fetch happens
+
 - (void)loadFlickrPhotosFromLocalURL:(NSURL *)localFile
-intoContext:(NSManagedObjectContext *)context
-andThenExecuteBlock:(void(^)())whenDone
-    {
-        if (context) {
-            NSArray *photos = [self flickrPhotosAtURL:localFile];
-            [context performBlock:^{
-                [Photo loadPhotosFromFlickrArray:photos intoManagedObjectContext:context];
-                [context save:NULL]; // NOT NECESSARY if this is a UIManagedDocument's context
-                if (whenDone) whenDone(); // if the block exist, execute it
-            }];
-        } else {
-            if (whenDone) whenDone(); // idem even if the context doesn't exist
-        }
+                         intoContext:(NSManagedObjectContext *)context
+                 andThenExecuteBlock:(void(^)())whenDone
+{
+    if (context) {
+        NSArray *photos = [self flickrPhotosAtURL:localFile];
+        [context performBlock:^{
+            [Photo loadPhotosFromFlickrArray:photos intoManagedObjectContext:context];
+            [context save:NULL]; // NOT NECESSARY if this is a UIManagedDocument's context
+            if (whenDone) whenDone(); // if the block exist, execute it
+        }];
+    } else {
+        if (whenDone) whenDone(); // idem even if the context doesn't exist
+    }
 }
-    
-    
+
+
 #pragma - mark NSURLSessionDownloadDelegate
-    /* Sent when a download task that has completed a download.  The delegate should
-     * copy or move the file at the given location to a new location as it will be
-     * removed when the delegate message returns. URLSession:task:didCompleteWithError: will
-     * still be called.
-     */
+/* Sent when a download task that has completed a download.  The delegate should
+ * copy or move the file at the given location to a new location as it will be
+ * removed when the delegate message returns. URLSession:task:didCompleteWithError: will
+ * still be called.
+ */
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask
 didFinishDownloadingToURL:(NSURL *)location
-    {
-        // we shouldn't assume we're the only downloading going on ...
-        // we gave a name to the taskDescription earlier (in start Flickr fetch)
-        if ([downloadTask.taskDescription isEqualToString:FLICKR_FETCH]) {
-            // ... but if this is the Flickr fetching, then process the returned data
-            [self loadFlickrPhotosFromLocalURL:location
-                                   intoContext:self.photoDatabaseContext
-                           andThenExecuteBlock:^{
-                               [self flickrDownloadTasksMightBeComplete];
-                           }
-             ];
-        }
+{
+    // we shouldn't assume we're the only downloading going on ...
+    // we gave a name to the taskDescription earlier (in start Flickr fetch)
+    if ([downloadTask.taskDescription isEqualToString:FLICKR_FETCH]) {
+        // ... but if this is the Flickr fetching, then process the returned data
+        [self loadFlickrPhotosFromLocalURL:location
+                               intoContext:self.photoDatabaseContext
+                       andThenExecuteBlock:^{
+                           [self flickrDownloadTasksMightBeComplete];
+                       }
+         ];
+    }
 }
-    
-    //Required by protocol
-    
-    /* Sent periodically to notify the delegate of download progress. */
-    - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask
-didWriteData:(int64_t)bytesWritten
-totalBytesWritten:(int64_t)totalBytesWritten
+
+//Required by protocol
+
+/* Sent periodically to notify the delegate of download progress. */
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask
+      didWriteData:(int64_t)bytesWritten
+ totalBytesWritten:(int64_t)totalBytesWritten
 totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
-    {
-        
-    }
-    //Required by protocol
+{
     
-    /* Sent when a download has been resumed. If a download failed with an
-     * error, the -userInfo dictionary of the error will contain an
-     * NSURLSessionDownloadTaskResumeData key, whose value is the resume
-     * data.
-     */
-    - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask
-didResumeAtOffset:(int64_t)fileOffset
+}
+//Required by protocol
+
+/* Sent when a download has been resumed. If a download failed with an
+ * error, the -userInfo dictionary of the error will contain an
+ * NSURLSessionDownloadTaskResumeData key, whose value is the resume
+ * data.
+ */
+- (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask
+ didResumeAtOffset:(int64_t)fileOffset
 expectedTotalBytes:(int64_t)expectedTotalBytes
-    {
+{
+}
+
+-(NSArray *) flickrPhotosAtURL:(NSURL *)url
+{
+    
+    NSData * jsonResults = [NSData dataWithContentsOfURL: url];
+    NSDictionary * propertyListResults =  [NSJSONSerialization JSONObjectWithData:jsonResults options:0 error:NULL]; // Transform the JSON data into a dictionnary
+    NSArray *photos = [ propertyListResults valueForKeyPath:FLICKR_RESULTS_PHOTOS];
+    
+    
+    return photos;
+}
+
+// this is "might" in case some day we have multiple downloads going on at once
+
+- (void)flickrDownloadTasksMightBeComplete
+{
+    if (self.flickrDownloadBackgroundURLSessionCompletionHandler) {
+        [self.flickrDownloadSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
+            // we're doing this check for other downloads just to be theoretically "correct"
+            //  but we don't actually need it (since we only ever fire off one download task at a time)
+            // in addition, note that getTasksWithCompletionHandler: is ASYNCHRONOUS
+            //  so we must check again when the block executes if the handler is still not nil
+            //  (another thread might have sent it already in a multiple-tasks-at-once implementation)
+            if (![downloadTasks count]) {  // any more Flickr downloads left?
+                // nope, then invoke flickrDownloadBackgroundURLSessionCompletionHandler (if it's still not nil)
+                void (^completionHandler)() = self.flickrDownloadBackgroundURLSessionCompletionHandler;
+                self.flickrDownloadBackgroundURLSessionCompletionHandler = nil;
+                if (completionHandler) {
+                    completionHandler();
+                }
+            } // else other downloads going, so let them call this method when they finish
+        }];
     }
     
-    -(NSArray *) flickrPhotosAtURL:(NSURL *)url
-    {
-        
-        NSData * jsonResults = [NSData dataWithContentsOfURL: url];
-        NSDictionary * propertyListResults =  [NSJSONSerialization JSONObjectWithData:jsonResults options:0 error:NULL]; // Transform the JSON data into a dictionnary
-        NSArray *photos = [ propertyListResults valueForKeyPath:FLICKR_RESULTS_PHOTOS];
-        
-        
-        return photos;
-    }
-    
-    // this is "might" in case some day we have multiple downloads going on at once
-    
-    - (void)flickrDownloadTasksMightBeComplete
-    {
-        if (self.flickrDownloadBackgroundURLSessionCompletionHandler) {
-            [self.flickrDownloadSession getTasksWithCompletionHandler:^(NSArray *dataTasks, NSArray *uploadTasks, NSArray *downloadTasks) {
-                // we're doing this check for other downloads just to be theoretically "correct"
-                //  but we don't actually need it (since we only ever fire off one download task at a time)
-                // in addition, note that getTasksWithCompletionHandler: is ASYNCHRONOUS
-                //  so we must check again when the block executes if the handler is still not nil
-                //  (another thread might have sent it already in a multiple-tasks-at-once implementation)
-                if (![downloadTasks count]) {  // any more Flickr downloads left?
-                    // nope, then invoke flickrDownloadBackgroundURLSessionCompletionHandler (if it's still not nil)
-                    void (^completionHandler)() = self.flickrDownloadBackgroundURLSessionCompletionHandler;
-                    self.flickrDownloadBackgroundURLSessionCompletionHandler = nil;
-                    if (completionHandler) {
-                        completionHandler();
-                    }
-                } // else other downloads going, so let them call this method when they finish
-            }];
-        }
-        
-    }
-    
-    
-    
-    
-    @end
+}
+
+
+
+
+@end

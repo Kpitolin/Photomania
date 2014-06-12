@@ -11,7 +11,7 @@
 #import "ImageViewController.h"
 
 @implementation PhotosCDTVC
--(UITableViewCell *)tableView: (UITableView *) tabaleView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
+-(UITableViewCell *)tableView: (UITableView *) tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     
     UITableViewCell * cell = [self.tableView dequeueReusableCellWithIdentifier:@"Photo Cell"];
     Photo * photo = [self.fetchedResultsController objectAtIndexPath:indexPath];
@@ -45,7 +45,7 @@
                   fromIndexPath:index];
 }
 
--(void)tableView:(UITableView *)tableView didDeselectRowAtIndexPath:(NSIndexPath *)indexPath{
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     id detailVc = [self.splitViewController.viewControllers lastObject];
     
     if ([detailVc isKindOfClass:[UINavigationController class]]){
