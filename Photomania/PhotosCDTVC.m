@@ -24,6 +24,8 @@
 
 - (void) prepareViewController:(id)vc forSegue:(NSString *)segueIdentifier fromIndexPath:(NSIndexPath *)index{
     
+    dispatch_queue_t load = dispatch_queue_create("score load", NULL);
+    dispatch_async(load, ^{
     Photo * photo = [self.fetchedResultsController objectAtIndexPath:index];
     if ([vc isKindOfClass:[ImageViewController class]]){
             //prepare vc
@@ -33,6 +35,7 @@
             
         
     }
+    });
 }
 
 -(void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
